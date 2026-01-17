@@ -9,6 +9,7 @@ export const mockMeetingRequests: MeetingRequest[] = [
     time: '14:30',
     message: 'I would like to discuss my career options after graduation and get advice on job applications.',
     status: 'pending',
+    counselorId: '1', // Assigned to Dr. Sarah Williams
   },
   {
     id: '2',
@@ -18,6 +19,7 @@ export const mockMeetingRequests: MeetingRequest[] = [
     time: '10:00',
     message: 'Need guidance on internship opportunities in tech industry.',
     status: 'pending',
+    counselorId: '1', // Assigned to Dr. Sarah Williams
   },
   {
     id: '3',
@@ -27,6 +29,7 @@ export const mockMeetingRequests: MeetingRequest[] = [
     time: '15:00',
     message: 'Looking for resume review and interview preparation tips.',
     status: 'pending',
+    counselorId: '2', // Assigned to Prof. Michael Johnson
   },
 ];
 

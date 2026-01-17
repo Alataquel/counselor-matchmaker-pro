@@ -3,17 +3,36 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { MeetingRequest } from '@/types';
+import { cn } from '@/lib/utils';
 
 interface MeetingRequestCardProps {
   request: MeetingRequest;
+  isHighlighted?: boolean;
+  isDimmed?: boolean;
+  counselorName?: string;
   onAccept: (id: string) => void;
   onPropose: (id: string) => void;
   onDecline: (id: string) => void;
 }
 
-export function MeetingRequestCard({ request, onAccept, onPropose, onDecline }: MeetingRequestCardProps) {
+export function MeetingRequestCard({ 
+  request, 
+  isHighlighted, 
+  isDimmed,
+  counselorName,
+  onAccept, 
+  onPropose, 
+  onDecline 
+}: MeetingRequestCardProps) {
   return (
-    <Card className="card-shadow animate-fade-in border-border bg-card transition-shadow hover:shadow-md">
+    <Card 
+      className={cn(
+        "card-shadow animate-fade-in border-2 bg-card transition-all",
+        isHighlighted && "border-primary ring-2 ring-primary/20 shadow-md",
+        isDimmed && "opacity-40",
+        !isHighlighted && !isDimmed && "border-transparent"
+      )}
+    >
       <CardContent className="p-6">
         <div className="flex items-start justify-between">
           <div className="space-y-3">
@@ -48,6 +67,16 @@ export function MeetingRequestCard({ request, onAccept, onPropose, onDecline }: 
             <p className="text-sm italic text-muted-foreground">
               "{request.message}"
             </p>
+
+            {/* Assigned Counselor */}
+            {counselorName && (
+              <div className="flex items-center gap-2 pt-1">
+                <Badge variant="outline" className="border-primary/30 bg-primary/5 text-primary">
+                  <User className="mr-1 h-3 w-3" />
+                  {counselorName}
+                </Badge>
+              </div>
+            )}
 
             {/* Action Buttons */}
             <div className="flex flex-wrap gap-2 pt-2">

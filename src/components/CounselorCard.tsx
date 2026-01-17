@@ -1,10 +1,14 @@
-import { User, Mail, Calendar, Users, Clock } from 'lucide-react';
+import { User, Mail, Calendar, Users, Clock, Check } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Counselor, LoadStatus } from '@/types';
+import { cn } from '@/lib/utils';
 
 interface CounselorCardProps {
   counselor: Counselor;
+  isSelected?: boolean;
+  assignedCount?: number;
+  onClick?: () => void;
 }
 
 function getLoadStatus(counselor: Counselor): LoadStatus {
@@ -25,18 +29,33 @@ function getLoadBadgeClasses(status: LoadStatus): string {
   }
 }
 
-export function CounselorCard({ counselor }: CounselorCardProps) {
+export function CounselorCard({ counselor, isSelected, assignedCount = 0, onClick }: CounselorCardProps) {
   const loadStatus = getLoadStatus(counselor);
 
   return (
-    <Card className="card-shadow animate-fade-in border-border bg-card transition-shadow hover:shadow-md">
+    <Card 
+      className={cn(
+        "card-shadow animate-fade-in border-2 bg-card transition-all cursor-pointer hover:shadow-md",
+        isSelected 
+          ? "border-primary ring-2 ring-primary/20" 
+          : "border-transparent hover:border-primary/30"
+      )}
+      onClick={onClick}
+    >
       <CardContent className="p-5">
         <div className="flex items-start justify-between">
           <div className="space-y-3">
             {/* Counselor Info */}
             <div className="flex items-center gap-2">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/10">
-                <User className="h-5 w-5 text-primary" />
+              <div className={cn(
+                "flex h-10 w-10 items-center justify-center rounded-full",
+                isSelected ? "bg-primary text-primary-foreground" : "bg-primary/10"
+              )}>
+                {isSelected ? (
+                  <Check className="h-5 w-5" />
+                ) : (
+                  <User className="h-5 w-5 text-primary" />
+                )}
               </div>
               <div>
                 <h4 className="font-semibold text-foreground">{counselor.name}</h4>
@@ -84,6 +103,15 @@ export function CounselorCard({ counselor }: CounselorCardProps) {
                 <span className="text-muted-foreground">pending</span>
               </div>
             </div>
+
+            {/* Selected indicator */}
+            {isSelected && assignedCount > 0 && (
+              <div className="pt-1">
+                <Badge className="bg-primary text-primary-foreground">
+                  {assignedCount} request{assignedCount !== 1 ? 's' : ''} shown
+                </Badge>
+              </div>
+            )}
           </div>
 
           {/* Load Status */}
